@@ -1,11 +1,10 @@
 FROM php:5.6-fpm
 
-RUN printf "deb http://archive.debian.org/debian/ jessie main\ndeb-src http://archive.debian.org/debian/ jessie main\ndeb http://security.debian.org jessie/updates main\ndeb-src http://security.debian.org jessie/updates main" > /etc/apt/sources.list
-
 RUN apt-get update
 RUN apt-get install -y \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
+        libz-dev zlib1g-dev \
         libpng-dev \
     && docker-php-ext-install -j$(nproc) iconv \
     && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
@@ -15,14 +14,12 @@ RUN apt-get install -y \
   curl \
   wget \
   git \
-  libfreetype6-dev \
-  libjpeg62-turbo-dev \
   libxslt-dev \
   libicu-dev \
   libmcrypt-dev \
   libpng-dev \
   libxml2-dev \
-  && docker-php-ext-install -j$(nproc) iconv mcrypt mbstring mysqli pdo_mysql zip \
+  && docker-php-ext-install -j$(nproc) mcrypt mbstring mysqli pdo_mysql zip \
   && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
 
 RUN docker-php-ext-configure intl
